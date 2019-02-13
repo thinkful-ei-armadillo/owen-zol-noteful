@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
+import NotefulContext from '../NotefulContext';
 import { Link } from 'react-router-dom'
 
 class Folderlist extends Component {
-
-    static defaultProps = {
-        folder: [],
-      };
+    static contextType = NotefulContext;
 
     render(){
-        const folders = this.props.folders
+        const folders = this.context.folders
                                   .map(folder => {
                                         return (
                                             <li key={folder.id}>
@@ -20,7 +18,7 @@ class Folderlist extends Component {
                                         })
         return (
             <div className='folder-list'>
-                <ul className='NoteListNav__list'>
+                <ul className='folders'>
                     {folders}
                 </ul>
             </div>
@@ -28,7 +26,6 @@ class Folderlist extends Component {
     }
 
 }
-
 
 
 export default Folderlist

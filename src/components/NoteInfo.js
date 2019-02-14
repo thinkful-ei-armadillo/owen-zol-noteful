@@ -5,9 +5,13 @@ import NotefulContext from '../NotefulContext';
 class NoteInfo extends Component {
     static contextType = NotefulContext;
 
+    getNoteInfo = (noteId) => {
+        return this.context.notes.find(note => note.id === noteId)
+      }
+
     render(){
         const { noteId } = this.props.match.params
-        const note = this.context.getNoteInfo(noteId)
+        const note = this.getNoteInfo(noteId)
         return (
             <div className='note'>
                 <h2 className='title'>

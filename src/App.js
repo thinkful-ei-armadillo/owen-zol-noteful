@@ -24,28 +24,11 @@ class App extends Component {
   }
   // ===============================================================
 
-  findFolder = (noteId) => {
-    const note = this.state.notes.find(note => note.id === noteId)
-    const folder = this.state.folders.find(folder => folder.id === note.folderId)
-    return folder;
-  }
-
-  getNotesFolder = (folderId) => {
-    return this.state.notes.filter(note => note.folderId === folderId)
-  }
-  
-  getNoteInfo = (noteId) => {
-    return this.state.notes.find(note => note.id === noteId)
-  }
-
   render() {
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.notes,
       // add new note, add new folder and delete note
-      findFolder: this.findFolder,
-      getNoteFolder: this.getNotesFolder,
-      getNoteInfo: this.getNoteInfo,
     }
     console.log(contextValue)
     return (

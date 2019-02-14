@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
 import NotefulContext from '../NotefulContext';
+import deleteNote from '../deleteNote';
 
 class NoteInfo extends Component {
     static contextType = NotefulContext;
@@ -8,6 +8,11 @@ class NoteInfo extends Component {
     getNoteInfo = (noteId) => {
         return this.context.notes.find(note => note.id === noteId)
       }
+    
+    handleClickDelete = (id, callBack) => {
+        deleteNote(id, callBack); 
+         this.props.history.push('/');
+    }
 
     render(){
         const { noteId } = this.props.match.params
@@ -17,7 +22,9 @@ class NoteInfo extends Component {
                 <h2 className='title'>
                     {note.name}
                 </h2>
-                <button className='delete-note' type='button'>DELETE</button>
+                <button className='delete-note' onClick={() => this.handleClickDelete(note.id, this.context.deleteNote)}>
+                    DELETE
+                </button>
                 <div className='modified-date'>
                     Modified <span>{note.modified}</span>
                 </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import NotefulContext from './NotefulContext';
 
-import STORE from './store';
+// import STORE from './store';
 import Folderlist from './components/Folderlist'
 import Folder from './components/Folder';
 import Notelist from './components/Notelist';
@@ -17,17 +17,45 @@ class App extends Component {
 
   // =================Update state with get request================
   componentDidMount(){
-    this.setState({
-      folders: STORE.folders,
-      notes: STORE.notes,
+    const options = {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      }
+    }
+
+    Promise.all([
+        fetch('http://localhost:9090/folders', options),
+        fetch('http://localhost:9090/notes', options)
+    ])
+    .then(([res1, res2]) => {
+      if(res1.ok && res2.ok) return Promise.all([res1.json(), res2.json()])
+      else throw new Error(res1.status, res2.status)
     })
+    .then(([folders, notes]) => {
+      this.setState({
+          folders, 
+          notes,
+      })
+    })
+    .catch(error => console.log(error))
+    console.log(this.state)
   }
   // ===============================================================
+
+  deleteNote = (noteId) => {
+    const newNotes = this.state.notes.filter(note => note.id !== noteId)
+    this.setState({
+      notes: newNotes
+    })
+  }
+
 
   render() {
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.notes,
+      deleteNote: this.deleteNote,
       // add new note, add new folder and delete note
     }
     console.log(contextValue)
